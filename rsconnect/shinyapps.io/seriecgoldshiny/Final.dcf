@@ -1,0 +1,12 @@
+name: Final
+title: Final
+username:
+account: seriecgoldshiny
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2066407
+bundleId: 2976138
+url: https://seriecgoldshiny.shinyapps.io/Final/
+when: 1586185772.56968
+asMultiple: FALSE
+asStatic: FALSE
