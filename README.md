@@ -9,7 +9,7 @@ Luca Badolato
 Matteo Maggioni  
 Wentian Tian  
 
-Feel free to contact us at “luca.badolato[at]studbocconi.it” for suggestions or requests for clarifications. 
+Feel free to contact us at “luca.badolato[at]studbocconi.it” or “lorenz.aull[at]studbocconi.it” for suggestions or requests for clarifications. 
 
 ### Acknowledgements
 The data has kindly been made available by Geniussports. 
