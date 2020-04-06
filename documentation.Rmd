@@ -13,7 +13,7 @@ Luca Badolato
 Matteo Maggioni  
 Wentian Tian  
 
-Feel free to contact us at “luca.badolato[at]studbocconi.it” for suggestions or requests for clarifications. 
+Feel free to contact us at “luca.badolato[at]studbocconi.it” or “lorenz.aull[at]studbocconi.it” for suggestions or requests for clarifications. 
 
 ### Acknowledgements
 The data has kindly been made available by Geniussports^[2] . 
@@ -43,18 +43,8 @@ The structure of this documentation is as follows:
 ### 1. Task
   
 The objective of this assignment was to learn how to build a RShiny application that uses and visualizes data downloaded via an API. The application had to be capable of visualizing all the throw attempts of selected players of selected teams playing the 2019/2020 season of the `SERIE C GOLD LOMBARDIA` and allow users to apply different filters and specific selections.  
-Our starting point was Julia Wrobel’s article on Learning Shiny with NBA data^[3], from where we took base code and app features, and then modified and expanded them. The required data was to be retrieved through the Geniussports API^[5] .  
+Our starting point was Julia Wrobel’s article on Learning Shiny with NBA data^[3], from where we took base code and app features, and then modified and expanded them. The required data was to be retrieved through the Geniussports API^[5].  
 The app is essentially split into two pages: A visualization page that is centered around graphing a selection of throws onto a basketball court map, and a stats page, that gives out statistics for two selected players and their teams for easy comparison. The third page is for documentation purposes only. 
-
-### 2. Data Origin and API Usage
-
-The data, which was kindly provided by Geniussports^[2], has been downloaded through an API (Application Programming Interface), which allowed us to access data stored on a server using a key password. APIs are a useful and powerful way to download a specific type and subset of data of interest. To have an idea of the query parameters and type of data provided by Geniussports, you can find information here: https://developer.geniussports.com/warehouse/rest/index_basketball.html. 
-
-Basically, each competition and each match are characterized by an identifier, so that it is possible to easily access them. In our case, the `SERIE C GOLD LOMBARDIA` is identified by the league identifier `25992` and e.g. the match identifier `1362614` is associated to Sansebasket VS Romano Lombardo, played on 28/09/19. The same match identifier is used by the website https://www.fibalivestats.com/u/FIPDP/1362614/bs.html, where the number in the URL is the desired match. It is possible to see a summary of the match, statistics and a map of the basketball court with all the shots, which is a useful way to check that the data has been downloaded properly. 
-  
-The objective of this assignment is to learn how to build a RShiny application that uses and visualizes data downloaded via an API. The application has to be capable of visualizing all the throw attempts of selected players of selected teams of `SERIE C GOLD LOMBARDIA` and allows users to apply different filters and specific selections.  
-Our starting point was Julia Wrobel’s article on Learning Shiny with NBA data^[3] , from where we took base code and app features, and then changed and expanded them. The required data was to be retrieved through the Geniussports API^[5] .  
-The app is essentially split into two pages: A visualization page that is centered around graphing a selection of throws on a basketball court map, and a stats page, that gives out statistics for two selected players and their teams for easy comparison. The third page is for documentation purposes only. 
 
 ### 2. Data Origin and API Usage
 
@@ -233,7 +223,6 @@ output$court_shots <- renderPlot({
   
 ##### Showing the statistics of selected throws under the court
 
-<<<<<<< HEAD
 Two text boxes under the graph shows some basic statistics about the amount of selected shots in the graph, specifically accuracy and the amount of shots selected. Ideally, we want these items to have access to the same data as the graph. However, the text boxes are independent to our graph from above. The graph sits inside it’s own function, called `renderPlot`, while our textbox sits inside another function called `renderText`. 
   
 Two text boxes under the graph show some basic statistics about the amount of selected shots in the graph, specifically accuracy and the amount of shots selected. Ideally, we want these box to have access to the same data as the graph. However, the textboxes are independent to our graph from above. The graph sits inside it’s own function (called `renderPlot`), while our textbox sits inside another function called `renderText`. 

@@ -5,8 +5,8 @@ account: lorenzaull
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2066214
-bundleId: 2976023
+bundleId: 2976058
 url: https://lorenzaull.shinyapps.io/SerieCShiny/
-when: 1586184257.64229
+when: 1586184710.45442
 asMultiple: FALSE
 asStatic: FALSE
