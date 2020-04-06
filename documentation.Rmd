@@ -1,0 +1,307 @@
+---
+title: "documentation"
+output: html_document
+---
+
+## Documentation
+
+This app is the end result for a class project for course 20630 Introduction to Sport Analytics at Universitá Bocconi, taught by Prof. Carlo Favero in Spring 2020^[1] . 
+
+### Authors
+Lorenz Aull  
+Luca Badolato  
+Matteo Maggioni  
+Wentian Tian  
+
+Feel free to contact us at “luca.badolato[at]studbocconi.it” for suggestions or requests for clarifications. 
+
+### Acknowledgements
+The data has kindly been made available by Geniussports^[2] . 
+
+We’d like to thank Prof. Favero and Luca Minotti for their advice and help throughout this project. 
+
+For the half court visualization, we used code from Julia Wrobel^[3] , which was adapted from Todd W. Schneider^[4] . For the full court visualization, we used code provided by Luca Minotti. 
+
+
+### Structure
+The structure of this documentation is as follows: 
+
++ 1. Task
++ 2. Structure of the App
++ 3. Data Manipulation
+  + 3.1 Full Court vs Half Court - What's the Difference?
+  + 3.2 Transforming the Coordinates
+  + 3.3 Transformation of the Shot Regions
+  + 3.4 Other Minor Data Transformations
++ 4. Overview Over the Features
+  + 4.1 Page 1
+  + 4.2 Page 2
++ 5. Resources
+  + 5.1 References
+  + 5.2 R packages used
+
+### 1. Task
+  
+The objective of this assignment was to learn how to build a RShiny application that uses and visualizes data downloaded via an API. The application had to be capable of visualizing all the throw attempts of selected players of selected teams playing the 2019/2020 season of the `SERIE C GOLD LOMBARDIA` and allow users to apply different filters and specific selections.  
+Our starting point was Julia Wrobel’s article on Learning Shiny with NBA data^[3], from where we took base code and app features, and then modified and expanded them. The required data was to be retrieved through the Geniussports API^[5] .  
+The app is essentially split into two pages: A visualization page that is centered around graphing a selection of throws onto a basketball court map, and a stats page, that gives out statistics for two selected players and their teams for easy comparison. The third page is for documentation purposes only. 
+
+### 2. Data Origin and API Usage
+
+The data, which was kindly provided by Geniussports^[2], has been downloaded through an API (Application Programming Interface), which allowed us to access data stored on a server using a key password. APIs are a useful and powerful way to download a specific type and subset of data of interest. To have an idea of the query parameters and type of data provided by Geniussports, you can find information here: https://developer.geniussports.com/warehouse/rest/index_basketball.html. 
+
+Basically, each competition and each match are characterized by an identifier, so that it is possible to easily access them. In our case, the `SERIE C GOLD LOMBARDIA` is identified by the league identifier `25992` and e.g. the match identifier `1362614` is associated to Sansebasket VS Romano Lombardo, played on 28/09/19. The same match identifier is used by the website https://www.fibalivestats.com/u/FIPDP/1362614/bs.html, where the number in the URL is the desired match. It is possible to see a summary of the match, statistics and a map of the basketball court with all the shots, which is a useful way to check that the data has been downloaded properly. 
+  
+The objective of this assignment is to learn how to build a RShiny application that uses and visualizes data downloaded via an API. The application has to be capable of visualizing all the throw attempts of selected players of selected teams of `SERIE C GOLD LOMBARDIA` and allows users to apply different filters and specific selections.  
+Our starting point was Julia Wrobel’s article on Learning Shiny with NBA data^[3] , from where we took base code and app features, and then changed and expanded them. The required data was to be retrieved through the Geniussports API^[5] .  
+The app is essentially split into two pages: A visualization page that is centered around graphing a selection of throws on a basketball court map, and a stats page, that gives out statistics for two selected players and their teams for easy comparison. The third page is for documentation purposes only. 
+
+### 2. Data Origin and API Usage
+
+The data, which was kindly provided by Geniussports^[2], has been downloaded through an API (Application Programming Interface), which allowed us to access data stored on a server using a key password. API is a useful and powerful way to download a specific type and subset of data of interest. To have an idea of the query parameters and type of data provided by Geniussports, you can find information here: https://developer.geniussports.com/warehouse/rest/index_basketball.html. 
+
+Basically, each competition and each match are characterized by an identifier, so that it is possible to easily access them. In our case, the `SERIE C GOLD LOMBARDIA` is identified by `25992` and e.g. the match identifier `1362614` is associated to Sansebasket VS Romano Lombardo, played on 28/09/19. The same match identifier is used by the website https://www.fibalivestats.com/u/FIPDP/1362614/bs.html, where the number in link is the desired match. It is possible to see a summary of the match, statistics and the basketball court with all the shots, which is a useful instrument to check that the data is properly downloaded. 
+  
+The API query consists of three parts:
+
++ the url, where the data is stored
++ the path, through which the data of interest is selected
++ a key, which allows access
+  
+The match identifiers for all games in 2019/2020 season of the `SERIE C GOLD LOMBARDIA` go from `1362614` to `1362926` (plus the match `1378682`). Therefore, we downloaded the data using a for loop and stored them into the data frame `whole_data.df`. Actually, since some games are not yet played, or were rescheduled, we excluded these from the dataset.  
+   
+The data identifiers for the `SERIE C GOLD LOMBARDIA` (for the season 2019/2020) go from `1362614` to `1362926` (plus the match `1378682`). Therefore, we downloaded the data using a for loop and stored them into the data frame `whole_data.df`.  Actually, since there are some not played or scheduled matches, we used few loops to properly exclude them. 
+  
+### 3. Data Manipulation
+
+#### 3.1 Full Court vs Half Court - What's the Difference?
+
+Our app features two selectable visualization options: a horizontal full court, and a vertical half court. This has different implications. The half court maps all atempts as if they had been made on one basket, instead of two baskets at the opposing end of the pitch. This is beneficial, because when teams ultimately switch sides during a match, there is no differences between the two baskets, as the pitch is symmetrical. The vertical pitch has been used by Todd W. Schneider and Julia Wrobel, however, the Geniussports API gives us coordinates for a horizontal, two-basket representation of the pitch. This allows us to see at which end of the field the throws were made.   
+  
+All in all, one pitch representation is vertical and one is horizontal, which means that their coordinate systems are different.
+   
+The matchdata provided by Geniussports uses the horizontal two-basket field representation. To plot the basketball court in our app, we kindly received code from Luca Minotti, which uses the same coordinate orientation and required only minimal transformation of the data. In the original data, the y-axis goes from `0` to `100`, while in our plot of the full court, the y-axis goes from `0` to `50`. Hence, the y-value had to divided in half. Therefore the horizontal court has x-coordinate values from `0` (most western point on the field and location of the left basket) to `100` (most eastern point on the field and location of the right basket) and y-coordinates from `0` (most southern line on the field) to `50` (most northern line on the field, hence the two baskets are in the middle at y=`25`).   
+  
+The vertical half court representation has totally different coordinate system. It’s single basket is placed at the bottom of the graph, facing upwards, with coordinates `(0,0)`. All points left of the basket have negative x-coordinates, all points on the right have positive coordinates. As the width of the pitch is still `50`, the range of the x-coordinates is from `-25` to `25`. The Y axis goes from `0` (most southern line on the court and location of the basket) to `50` (half-court line). 
+  
+The matchdata provided by Geniussports uses the horizontal two-basket field representation. To plot the basketball court in our app, we kindly received code by Luca Minotti, which uses the same coordinate orientation and required only minimal transformation of the data. In the original data, the y-axis goes from 0 to 100, while in our plot of the full court, the y-axis goes from 0 to 50. Hence, the y-value has to be divided by two. Therefore, the horizontal court has x-coordinate values from 0 (most western point on the field and location of the left basket) to 100 (most eastern point on the field and location of the right basket) and y-coordinates from 0 (most southern line on the field) to 50 (most northern line on the field, hence the two baskets are in the middle at y=25).   
+  
+The vertical half court representation has a totally different coordinate system. It’s only basket that is placed at the bottom of the graph, facing upwards, with coordinates (0,0). All points left of the basket have negative x-coordinates, all points on the right have positive coordinates. As the width of the pitch is still 50, the range of the x-coordinates is from -25 to 25. The Y axis goes from 0 (most southern line on the court and location of the basket) to 50 (half-court line). 
+  
+#### 3.2 Transforming the Coordinates
+  
+As mentioned, the horizontal pitch required only very little transformation of the data. However, for the vertical single basket view, the coordinates had to be transformed. First of all, the X and Y axes had to be switched. Then, all shots that were made on far side basket on the court had to be mirrored, so that all shot attempts would appear on a single side of the court.   
+  
+Throws that had to be mirrored could be identified by having a bigger x-coordinate value than 50 in the original data (= being on the “right”-hand side in the horizontal court representation). For the x-axis (left or right of the basket), this was achieved by simply multiplying the x-coordinates for throws on the other end by -1. For the y-axis, all values over 50 had 100 subtracted, and were then multiplied by -1. This resulted in transformed coordinates that perfectly fit the vertical half court representation used by Julia Wrobel and Todd W. Schneider.  
+  
+The whole transformation looks as follows. We used `ifelse`functions: if the x-coordinates were not larger than 50, they were multiplied by 1 instead of -1 and effectively not touched.
+```{R}
+#Changing the coordinates
+whole_data.df$data.x3<-((((whole_data.df$data.y*0.5)-25)*1)*-1)
+whole_data.df$data.y3<-(whole_data.df$data.x)
+
+#Projecting the second court onto the first one
+whole_data.df$data.x3 <- whole_data.df$data.x3 * ifelse(whole_data.df$data.x>50,-1,1)
+whole_data.df$data.y3 <- whole_data.df$data.y3 + ifelse(whole_data.df$data.x>50,-100,0)
+whole_data.df$data.y3 <- whole_data.df$data.y3 * ifelse(whole_data.df$data.x>50,-1,1)
+```
+#### 3.3 Transformation of the shot regions
+   
+Our app visualizes attempted shots and allows users to apply different filters for deeper analysis. The original data gives us the shot type and the area where shots were attempted. We recategorized the shots for analytical purposes. We offer three groups of shots: `2pt short range`, `2pt mid range`, and `3pt`. 
+  
+Our app provides users with visualizations of shots attempted by players. The original data gives us the shot type and the area where shots were attempted. We recategorized the shots for analytical purposes. We offer three groups of shots: `2pt short range`, `2pt mid range`, and `3pt`. 
+    
+Why is the reclassification useful for the potential analysis? It’s easier to identify the pattern of an individual player. Therefore, you can come up with strategies to improve the shot choices and restrict the scoring of your opponents. In particular, a possible strategy that could be exploited is that you could reduce the number of 2pt mid range shots and increase the number of 3pt throws intuitively. This strategy has already been used by many teams. Also, filtering the shots by region allows us to independently assess the accuracy of the selected player from various distances. 
+
+Why is the reclassification useful for the potential analysis? It’s easier to identify the pattern of an individual player. Therefore, you can come up with strategies to improve the shot choices or restrict the scoring of your opponents. In particular, a possible strategy that could be exploited is that you could reduce the number of 2pt mid range shots and increase the number of 3pt throws intuitively. Also, filtering the shots by region allows us to independently assess the accuracy of the selected player from various distances. 
+   
+#### 3.4 Other minor data transformations
+   
+Finally, we applied some further data transformations that were required e.g. for the selection of the inputs and the creation of the subset of interest. For examples, we created the variables `made`, `teams` and `area` which contain the different values that the variable of interest can assume. We used the function `distinct()`:
+```{R}
+made = whole_data.df %>% distinct(data.success) %>% pull()
+teams = whole_data.df %>% distinct(data.teamName) %>% pull()
+area = whole_data.df %>% distinct(data.area) %>% pull()
+```  
+Furthermore, for purposes of clarity, we changed the variable `data.success` using the values `made` and `missed` instead of `1` and `0`.
+
+### 4. Overview over the features
+
+#### 4.1 Page 1
+
+##### Layout
+ 
+The shot visualization page is organized by using a sidebar panel and a main panel. All the filters and options appear in the sidebar, while all graphs and the shot statistics below are organized in the main panel. This works through the following commands:
+```{R}
+sidePanel(
+  #filters go in here
+)
+mainPanel(
+  #court graphs goes in here
+)
+```
+  
+##### Drawing the Court
+
+Defining a graph in Shiny works as follows: 
+```{R}
+output$court_shots <- renderPlot({ 
+})
+```
+Inside the brackets, we can specify how our output needs to look like. The court graph consists of two elements: The data points that get projected on a coordinate system, and the drawn lines, that describe the shape of a basketball court. Using the `ggplot2` package, these two things happen independently. The code looks like this:
+```{R}
+gg_court_nba 
++ geom_point(data = subset, alpha = 0.75, size = 2.5, aes(data.x3, data.y3 , color = data.success2 )) 
++ scale_color_manual("", values = c(made = "blue", missed = "orange"))
+```
+The data points get added by `geom_point`, the court itself gets drawn by the function `gg_court_nba` in this case. `geom_point` draws its data from a dataset called `subset`, while the other options are cosmetical. 
+  
+In our script, we called `gg_court` the command to draw a full horizontal two basket court, and `gg_court_nba` the command to draw a half court, because the half court visualization was originally designed and used by Julia Wrobel and Todd W. Schneider to graph NBA data, while our Italian data from Geniussports comes in the horizontal coordinate layout. 
+  
+To draw the court in our graph, we used another R-script, whose sole purpose is to define the shapes of the two basketball courts. For the half court, we took the code from Todd W. Schneider, which was used by Julia Wrobel and saved in a file called `helper.R`. To this code, we added the code provided to us by Luca Minotti to define the horizontal full court, so our file `helper.R` defines both functions for us.
+
+Through specifying 
+```{R}
+source("helpers.R")
+```
+at the beginning of our `server.R script`, the Shiny app knows that it also has to read this additional file to use its functions in the app. 
+
+Being able to add the court and the data points separately to our graph has certain advantages, for example that we can define visual styles for them independently. This will be explained further below. 
+  
+##### Filtering Throws
+
+As you can see from the code above, the data source for the data points comes from a dataset called `subset`. This subset of data dynamically changes depending on the input given from the filtering options on the left side of the page. Our app creates a new `subset` everytime a filtering option is changed, and then the graph shows all points that are a part of this subset. 
+  
+All filters on the left generate an input-variable in our app, which we can plug into functions to define `subset`. In the code it looks like this: 
+```{R}
+subset = filter(whole_data.df, whole_data.df$data.familyName == input$player_choice, whole_data.df$date >= input$date_selection[1] & whole_data.df$date <= input$date_selection[2], whole_data.df$data.shotType == input$shots_distance)
+subset = subset(subset, subset$data.period %in% as.character(input$shot_quarter))
+```
+In this code, our database (called `whole_data.df`) is being filtered to match the given inputs. The available inputs are `player_choice`, `date_selection`, the `period` and the `shots_distance`. In the end, the `subset` only includes shots from one selected player, during a certain time, from a certain distance, during a certain quarter. All these available shots get then used by the `geom_point` function, which draws them onto the coordinate system in our graph.
+
+##### Comparison Toggle Button
+
+The team comparison button switches the view between displaying the shots of an individual player and coloring them as hit/miss, to graph his attempts and those of his team, so that his impact and influence on the field can be assessed. To do this, we use the mentioned structure of `ggplot2` to add another layer of data on top of our graph. 
+``` {R}
+gg_court_nba 
++ geom_point(data = subset, alpha = 1, size = 2.5,aes(data.x3, data.y3 , color = input$player_choice)) 
++ geom_point(data = subsetteam, alpha = 0.15, size = 1.3,aes(data.x3, data.y3 , color = input$team_choice)) 
++ scale_color_manual("", values = c("blue","red"))
+```
+As you can see, now we have three layers: `gg_court_nba` (drawing the court), a `geom_point` layer for drawing the player data and a `geom_point` layer for team data. It gets its data from a new dataset called `subsetteam`, which was created using the filtering techniques described above - just on a team level and not a player level. As an end result, all filters get applied to both the player and team data, and the two get plotted over each other in the graph. `scale_color_manual` allows us to choose a custom coloring scheme which applies to both team and player data in this case, painting one set of data in blue, and the other in red. 
+  
+We make use of many `if/else` functions to allow the app to adapt to the selected inputs. This code is a shortened version of what is essentially happening:
+``` {R}
+if (input$`Player comparison` == FALSE) {
+    gg_court_nba + geom_point(subset)
+} else {
+    gg_court_nba + geom_point(subset)) + geom_point(subsetteam) 
+}
+```
+If the player/team comparison box is not ticked, only player data will be shown. If it otherwise is ticked, both team and player data will be shown. 
+  
+##### Comparison Toggle Button
+
+Switching between the two court views works similarly to switching between player data view and team comparison view. Another `if/else` function decides, based on the selected input, if the full court or half court is to be shown. 
+``` {R}
+if (input$court_view=="Half Court"){
+    gg_court_nba + geom_point(data = subset, aes(data.x3, data.y3 , color = data.success2))
+} else {
+    gg_court + geom_point(data = subset, aes(data.x, data.y/2 , color = data.success2 ))
+}
+```
+Note that the original, untransformed coordinates are called `data.x` and `data.y`. The transformed coordinates for the half court view are called `data.x3` and `data.y3`. `aes` stands for aesthetics and allows us to determine the colors that the points are painted in. In this case, the color is determined by the success of the shot, which means successful and unsuccessful attempts will be colored differently.  
+  
+Overall, toggling the court view and toggling player comparison gives us multiple levels of `if/else` functions. Essentially, this is what our reduced code looks like in the end to produce the shot map graph. 
+``` {R}
+output$court_shots <- renderPlot({
+  if (input$`Player comparison` == FALSE) {
+        if(input$court_view==”Half Court”) {
+            gg_court + geom_point(player subset)
+        } else {
+            gg_court_nba + geom_point (player subset) 
+        }
+    } else {
+    	  if(input$court_view==”Half Court”) {
+            gg_court + geom_point(player subset) + geom_point (team subset)
+        } else {
+            gg_court_nba + geom_point (player subset) + geom_point (team subset) 
+        }
+    }
+})
+```
+  
+##### Showing the statistics of selected throws under the court
+
+<<<<<<< HEAD
+Two text boxes under the graph shows some basic statistics about the amount of selected shots in the graph, specifically accuracy and the amount of shots selected. Ideally, we want these items to have access to the same data as the graph. However, the text boxes are independent to our graph from above. The graph sits inside it’s own function, called `renderPlot`, while our textbox sits inside another function called `renderText`. 
+  
+Two text boxes under the graph show some basic statistics about the amount of selected shots in the graph, specifically accuracy and the amount of shots selected. Ideally, we want these box to have access to the same data as the graph. However, the textboxes are independent to our graph from above. The graph sits inside it’s own function (called `renderPlot`), while our textbox sits inside another function called `renderText`. 
+  
+This detail has important implications, because Shiny doesn’t allow us to carry out filtering operations outside of functions. All the filtering stays inside the function it is defined in. This means that we cannot take the subset we created within our `renderPlot` function and have to do all of the filtering again. Luckily, we can just copy the existing filtering code from above and reuse it. Because we are filtering data inside another function, we can even reuse the name `subset` and there won’t be conflicts. 
+   
+This detail has important implications, because Shiny doesn’t allow us to carry out filtering operations outside of functions (to our knowledge). All the filtering happens only inside the function it is defined in. This means that we cannot use the subset we created within our `renderPlot` function and instead have to do all of the filtering again. Luckily, we can just copy the existing filtering code from above and reuse it. Because we are filtering data inside another function, we can even reuse the name `subset` and there won’t be conflicts. 
+  
+Calculating the statistics is straightforward. As one attempt at a throw takes up one line inside our dataset, the total amount of selected throws is the amount of rows in our subset, minus one, because the `nrow()` function seems to also count the column names as a row. The accuracy is computed as the mean of the variable `data.success`, which is either `0` or `1`.  
+   
+Inside the text box, we also insert text, which is being specified inside `" "`. The output of this function is a string that is being displayed as text in our app. Hence, the code for one of the boxes looks like this in our server.R file:
+``` {R}
+output$mean_player<-renderText({
+  #filtering happens here
+paste(" Player Accuracy:", round(((sum(subset$data.success,na.RM=TRUE)-1)/(nrow(subset)))*100,2),"%","
+","Amount of selected throws:",(nrow(subset))
+})
+```
+This output then gets called in the `ui.R` file as follows:
+``` {R}
+verbatimTextOutput("mean_player")
+```
+  
+#### 4.2 Page 2
+
+##### Layout
+
+The data comparison page is organized into columns. Shiny uses a grid system that goes from a width of 1 to 12. Hence we can divide our page into four equal columns of width 3. In our `ui.R` file, every column looks like this: 
+``` {R}
+column(3,
+#content of the column
+)
+```
+  
+##### Showing the statistics of selected throws under the court
+
+Inside each `column`, we place text boxes, which display the statistics for the selected team or player. The statistics on this page work identically to the ones on page 1. We once again create a `subset` through filtering our data based on the selected input (here only team and player name), and then calculating statistics for `successful`, `missed` and `attempted` throws, either overall, or for `2pt` and `3pt` throws only.
+  
+For example, computing and printing the statistics for player 1 for his 2pt throws in a text box looks like this in the `Server.R` file: 
+```{R}
+output$player_stats_p1_2pt<-renderText({
+  subset = filter(whole_data.df, whole_data.df$data.familyName == input$player_choice_p1, whole_data.df$data.actionType == "2pt")
+  paste(" Accuracy:",round(((mean(subset$data.success, na.RM=TRUE)))*100,2),"%","
+  ","Successful:",sum(subset$data.success, na.RM=TRUE)-1,"
+  ","Missed:",(nrow(subset)-sum(subset$data.success, na.RM=TRUE))+1,"
+  ","Attempted",nrow(subset)
+  )
+})
+```
+The outcome is again a string of text that changes dynamically, based on the given player and team input. In the `ui.R` file, this specific box gets called by the command:
+```{R}
+verbatimTextOutput("player_stats_p1_2pt")
+```
+  
+### 5. Resources
+
+#### 5.1 R Packages Used
+
+- shiny: https://github.com/rstudio/shiny-server
+- ggplot2: https://github.com/hadley/ggplot2
+- dplyr: https://github.com/hadley/dplyr
+- rsconnect: https://github.com/rstudio/rsconnect
+- tidyverse: https://github.com/tidyverse/tidyverse
+- knitr: https://github.com/yihui/knitr
+
+#### 5.2 References
+^[1] http://didattica.unibocconi.eu/myigier/doc.php?idDoc=31114&IdUte=48917&idr=1754&Tipo=m&lingua=eng  
+^[2] https://www.geniussports.com/sports/  
+^[3] http://juliawrobel.com/tutorials/shiny_tutorial_nba.html  
+^[4] https://github.com/toddwschneider/ballr  
+^[5] https://developer.geniussports.com/warehouse/rest/index_basketball.html  
