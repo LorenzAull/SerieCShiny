@@ -1,7 +1,7 @@
 
 This app is the end result for a class project for course 20630 Introduction to Sport Analytics at Universitá Bocconi, taught by Prof. Carlo Favero in Spring 2020. 
 
-You can access it at: https://lorenzaull.shinyapps.io/SerieCShiny/
+You can access it at: https://seriecgoldshiny.shinyapps.io/Final/
 
 ### Authors
 Lorenz Aull  
