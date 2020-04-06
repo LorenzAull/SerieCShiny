@@ -13,7 +13,7 @@ whole_data.df$data.success <- ifelse(whole_data.df$data.success == 1, "made", "m
 # Define UI for application
 shinyUI(fluidPage(
    
-  navbarPage("Bballshiny",
+  navbarPage("Navigation",
              tabPanel("Shots",
    
     # Application title

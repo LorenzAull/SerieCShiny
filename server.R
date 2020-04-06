@@ -9,7 +9,7 @@ source("helpers.R")
 load("matches.CGOLD2.Rda")
 
 #rsconnect information
-rsconnect::setAccountInfo(name='removed', token='removed', secret='removed')
+rsconnect::setAccountInfo(name='lorenzaull', token='446CC536A048707A41EFDD9677E9B025', secret='UyxXPR4G2Kyy6dU5LRHfvmhahfRuLFFYUcICg3eY')
 
 #Transformation of coordinates
 whole_data.df$data.x3<-((((whole_data.df$data.y*0.5)-25)*1)*-1)
