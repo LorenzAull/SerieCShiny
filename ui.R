@@ -1,11 +1,3 @@
-#ONE_MATCH_ONLY
-#FOLLOWING THE TUTORIAL
-
-
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-
 # load libraries and data
 library(shiny)
 library(tidyverse)
