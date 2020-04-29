@@ -5,8 +5,9 @@ account: seriecgoldshiny
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2066407
-bundleId: 2976138
+bundleId: 3080776
 url: https://seriecgoldshiny.shinyapps.io/Final/
-when: 1586185772.56968
+when: 1588155976.83253
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: test/server.R|test/ui.R

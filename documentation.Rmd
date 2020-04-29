@@ -207,15 +207,15 @@ Overall, toggling the court view and toggling player comparison gives us multipl
 output$court_shots <- renderPlot({
   if (input$`Player comparison` == FALSE) {
         if(input$court_view==”Half Court”) {
-            gg_court + geom_point(player subset)
+            gg_court_nba + geom_point(player subset)
         } else {
-            gg_court_nba + geom_point (player subset) 
+            gg_court + geom_point (player subset) 
         }
     } else {
     	  if(input$court_view==”Half Court”) {
-            gg_court + geom_point(player subset) + geom_point (team subset)
+            gg_court_nba + geom_point(player subset) + geom_point (team subset)
         } else {
-            gg_court_nba + geom_point (player subset) + geom_point (team subset) 
+            gg_court + geom_point (player subset) + geom_point (team subset) 
         }
     }
 })
