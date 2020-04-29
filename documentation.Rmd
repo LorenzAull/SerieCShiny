@@ -27,7 +27,7 @@ For the half court visualization, we used code from Julia Wrobel^[3] , which was
 The structure of this documentation is as follows: 
 
 + 1. Task
-+ 2. Structure of the App
++ 2. Data Origin and API Usage
 + 3. Data Manipulation
   + 3.1 Full Court vs Half Court - What's the Difference?
   + 3.2 Transforming the Coordinates
@@ -190,7 +190,7 @@ if (input$`Player comparison` == FALSE) {
 ```
 If the player/team comparison box is not ticked, only player data will be shown. If it otherwise is ticked, both team and player data will be shown. 
   
-##### Comparison Toggle Button
+##### Changing the Court View
 
 Switching between the two court views works similarly to switching between player data view and team comparison view. Another `if/else` function decides, based on the selected input, if the full court or half court is to be shown. 
 ``` {R}
