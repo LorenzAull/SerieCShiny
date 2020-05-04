@@ -18,17 +18,11 @@ shinyUI(fluidPage(
    
     # Application title
     titlePanel("Serie C Gold Shot Attempts"),
-    
-    
     br(),
-    
-    
-    
     # Sidebar with a slider input for number of bins 
     sidebarLayout(
         sidebarPanel(
   
-            
             # # drop down menu for player
             selectInput("team_choice", label = h2("Select team"),
                         choices = teams, selected = "SANSEBASKET", selectize = FALSE) , # uncomment comma to add another widget
@@ -51,7 +45,6 @@ shinyUI(fluidPage(
             radioButtons("court_view", label = h3("Select Court View"), choices = list("Half Court", "Full Court"))           
              ),
 
-    
         # Show output based on user selections
         mainPanel(
             
@@ -60,9 +53,7 @@ shinyUI(fluidPage(
             #
             verbatimTextOutput("mean_player"),
             verbatimTextOutput("mean_team")
-            # box plot of shot distances
-            #  plotlyOutput("shot_distances")
-            
+
         )
      )
     ),

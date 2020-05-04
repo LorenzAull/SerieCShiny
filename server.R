@@ -12,7 +12,7 @@ load("matches.CGOLD2.Rda")
 #rsconnect::setAccountInfo(name='removed', token='removed', secret='removed')
 
 #Transformation of coordinates
-whole_data.df$data.x3<-((((whole_data.df$data.y*0.5)-25)*1)*-1)
+whole_data.df$data.x3<-((whole_data.df$data.y*0.5)-25)*-1
 whole_data.df$data.y3<-(whole_data.df$data.x)
 #These two work in isolation for the left court
 #Now we need to transform separately for the right court
