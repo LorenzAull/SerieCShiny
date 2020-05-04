@@ -87,7 +87,7 @@ Throws that had to be mirrored could be identified by having a bigger x-coordina
 The whole transformation looks as follows. We used `ifelse`functions: if the x-coordinates were not larger than 50, they were multiplied by 1 instead of -1 and effectively not touched.
 ```{R}
 #Changing the coordinates
-whole_data.df$data.x3<-((((whole_data.df$data.y*0.5)-25)*1)*-1)
+whole_data.df$data.x3<-((whole_data.df$data.y*0.5)-25)*-1
 whole_data.df$data.y3<-(whole_data.df$data.x)
 
 #Projecting the second court onto the first one
